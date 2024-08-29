@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
-const generateOtp = require("./generateOtp");
 const asyncHandler = require("express-async-handler");
+const generateOtp = require("./generateOtp");
+
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -13,18 +14,22 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const sendEmail= asyncHandler(async({email , res})=>{ 
-    
+const sendEmail= asyncHandler(async({req , res})=>{ 
+
     const otp= generateOtp();
+
+    // Store OTP in session
+    req.session.otp = otp;
+    req.session.email = req.body.email;
 
     const receiver = {
         from: process.env.EMAIL,
-        to: email,
+        to: req.body.email,
         subject: "Your OTP for Registration",
         text: `Your OTP is : ${otp}`, 
     };
 
-    await transporter.sendMail(receiver, (error, emailResponse) => {
+    transporter.sendMail(receiver, (error, emailResponse) => {
         if (error){
              res.status(500);
              throw new Error(error);
