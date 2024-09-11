@@ -4,10 +4,13 @@ const errorHandler = require("./middleware/errorHandler");
 const sessionOption= require("./middleware/sessionOptions");
 const connectDb = require("./config/dbconnection");
 const session = require('express-session');
+const otpLimiter = require("./middleware/otpLimiter");
 require("dotenv").config();
 
 connectDb();
 
+app.set("trust proxy", 1); // Trust the first proxy
+app.use(otpLimiter);
 app.use(session(sessionOption));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

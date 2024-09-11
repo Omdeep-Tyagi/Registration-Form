@@ -3,17 +3,15 @@ const sendEmail=require("../service/sendEmail");
 const asyncHandler= require("express-async-handler");
 
 
-
 //@desc sending otp to user through mail
 //@route POST /api/otp
 //@access public
 const otpToUser=asyncHandler(async(req,res)=>{
-    const {username,email,phoneNo} = req.body;
-    if(!username || !email || !phoneNo)
-    {
-        res.status(400);
-        throw new Error("All fields are mandatory");
-    }
+    const {username,email,phoneNo,studentNo,branch,section,gender,scholarType} = req.body;
+   
+
+    // Get user's IP address from request 
+    const userIp =req.headers['x-forwarded-for'] || req.ip;//Handling the IP address in a proxied environment as well
 
     const userAvailable=await User.findOne({email});  //checking user is already registered or not by email as email is unique
     if(userAvailable)  
@@ -22,11 +20,18 @@ const otpToUser=asyncHandler(async(req,res)=>{
         throw new Error("User already registered");
     }
 
+    // Check the number of registrations from the current IP
+    const registrationCount = await User.countDocuments({ ip: userIp });
+    if (registrationCount >= 2) {
+      res.status(400);
+      throw new Error("Registration limit reached for this device.");
+    }
+
     // Send OTP to the user's email
     await sendEmail({ req , res });  
 
     // Store user details in session temporarily until OTP is verified
-    req.session.userData = { username, email, phoneNo };
+    req.session.userData = { username, email, phoneNo ,studentNo,branch,section,gender,scholarType,ip: userIp};
 })
 
 
@@ -38,6 +43,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
 
      // Convert otp to a string for comparison
      const otpString = String(otp);
+     //console.log(otp);
 
     // Check if OTP matches the one stored in session
     if (req.session.otp && req.session.otp === otpString) {
@@ -46,7 +52,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
         await newUser.save();
 
         // Clear the session data after saving the user
-        req.session.otp = null; //set null to ensure the OTP cannot be reused.
+        req.session.otp = null; 
         req.session.userData = null;
 
         res.status(200).json({ message: "OTP verified successfully and user registered!" });
