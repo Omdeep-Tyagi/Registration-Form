@@ -24,6 +24,7 @@ const userValidationSchema = Joi.object({
        .required(),
   branch: Joi.string().required(),
   section: Joi.string().required(),
+  domain: Joi.string().required(),
   gender: Joi.string().valid('Male', 'Female' , 'Others') .required(),
   scholarType: Joi.string().valid('Day scholar', 'Hosteller').required()
 });
