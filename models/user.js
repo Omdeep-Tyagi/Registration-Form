@@ -8,6 +8,7 @@ const userSchema=new Schema({
     studentNo: { type: Number},
     branch: { type: String },
     section: { type: String },
+    domain: { type: String },
     gender: { type: String },
     scholarType: { type: String},
     ip: { type: String }
