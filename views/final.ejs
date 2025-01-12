@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <title>Registration Form</title>
+    </head>
+    
+    <body class="bg-light">
+         
+        <div class="container mt-4">
+            <div class="text-center">
+                <h2 class="fw-bold">Hurray!!!</h2>
+                <!-- <p class="text-muted">One last step and you are done!</p> -->
+            </div>
+            <div class="d-flex justify-content-center align-items-center mt-3">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="offset-4 circle text-dark bg-light border border-secondary rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 30px; height: 30px; font-size: 14px; font-weight: bold; ">
+                        1
+                    </div>
+                    <p class="mt-1 small fw-semibold text-muted">General Details</p>
+                </div>
+                <!-- Connector -->
+            <div class="d-flex align-items-center mx-3" style="width: 80px;">
+                <div style="flex-grow: 1;margin-bottom: 35px; border-bottom: 2px solid #ddd;"></div>
+            </div>
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="offset-4 circle bg-light text-dark border border-secondary rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 30px; height: 30px; font-size: 14px; font-weight: bold;">
+                        2
+                    </div>
+                    <p class="mt-1 small fw-semibold text-muted">OTP Submission</p>
+                </div>
+                            <!-- Connector -->
+            <div class="d-flex align-items-center mx-3" style="width: 80px;">
+                <div style="flex-grow: 1;margin-bottom: 35px; border-bottom: 2px solid #ddd;"></div>
+            </div>
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="offset-4 circle text-light border border-secondary rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 30px; height: 30px; font-size: 14px; font-weight: bold; background-color: #4841a8;">
+                        3
+                    </div>
+                    <p class="mt-1 small fw-semibold">Verified & Registered</p>
+                </div>
+            </div>
+        </div>
+    
+
+
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <!-- Success Message -->
+                <% if (success && success.length) { %>
+                    <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert">
+                        <%= success %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                
+                <!-- Error Message -->
+                <% if (error && error.length) { %>
+                    <div class="alert alert-danger alert-dismissible fade show col-md-6" role="alert">
+                        <%= error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Main Heading Section -->
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6 text-center">
+                    <h1 class="display-4 text-success">Congratulations!</h1>
+                    <h3 class="text-muted">You have been registered successfully.</h3>
+                    <p class="lead mt-4">Thank you for registering. We are excited to have you on board!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JQzReD64j9X3SbFg53zHMY4GHdLqa3/9vFESOSi+TqGx2pVYPmlJ3qlF0lh/c5z3" crossorigin="anonymous"></script>
+    </body>
+</html>

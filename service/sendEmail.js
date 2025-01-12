@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail= asyncHandler(async({req , res})=>{ 
 
     const otp= generateOtp();
-
+    
     // Store OTP in session
     req.session.otp = otp;
     req.session.email = req.body.email;

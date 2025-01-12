@@ -10,6 +10,7 @@ const userSchema=new Schema({
     section: { type: String },
     gender: { type: String },
     scholarType: { type: String},
+    domain:{type:String},
     ip: { type: String }
 });
 

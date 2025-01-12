@@ -7,7 +7,7 @@ const asyncHandler= require("express-async-handler");
 //@route POST /api/otp
 //@access public
 const otpToUser=asyncHandler(async(req,res)=>{
-    const {username,email,phoneNo,studentNo,branch,section,gender,scholarType} = req.body;
+    const {username,email,phoneNo,studentNo,branch,section,gender,scholarType,domain} = req.body;
    
 
     // Get user's IP address from request 
@@ -27,11 +27,28 @@ const otpToUser=asyncHandler(async(req,res)=>{
       throw new Error("Registration limit reached for this device.");
     }
 
+    // //When you refresh the page, the client might be sending a request to an endpoint (e.g., /api/send-otp) that generates the OTP again without proper validation checks.
+    // //to overcome this, below is a condition
+    // //Check if OTP already exists in the session
+    if (req.session.otp) {
+        req.flash("error", "OTP already sent to your mail!");
+        return res.render('verify',{ success: req.flash("success"), error: req.flash("error") });
+       //return res.status(200).json({ message: "OTP already sent." });
+    }
+
+
     // Send OTP to the user's email
     await sendEmail({ req , res });  
 
+
     // Store user details in session temporarily until OTP is verified
-    req.session.userData = { username, email, phoneNo ,studentNo,branch,section,gender,scholarType,ip: userIp};
+    req.session.userData = { username, email, phoneNo ,studentNo,branch,section,gender,scholarType,domain,ip: userIp};
+
+     // Success case (send OTP and show success flash)
+     req.flash("success", "OTP sent successfully");
+    //  res.render("/verify");
+    res.render("verify",{ success: req.flash("success"), error: req.flash("error") });  // Correct usage without the leading slash
+
 })
 
 
@@ -43,7 +60,6 @@ const verifyOtp = asyncHandler(async (req, res) => {
 
      // Convert otp to a string for comparison
      const otpString = String(otp);
-     //console.log(otp);
 
     // Check if OTP matches the one stored in session
     if (req.session.otp && req.session.otp === otpString) {
@@ -55,9 +71,13 @@ const verifyOtp = asyncHandler(async (req, res) => {
         req.session.otp = null; 
         req.session.userData = null;
 
-        res.status(200).json({ message: "OTP verified successfully and user registered!" });
+        // req.flash("success", "OTP verified successfully and user registered!");
+        res.render("final",{ success: req.flash("success"), error: req.flash("error") });
+        // res.status(200).json({ message: "OTP verified successfully and user registered!" });
     } else {
-        res.status(400).json({ message: "Invalid OTP!" });
+        req.flash("error", "Invalid OTP!");
+        return res.render('verify',{ success: req.flash("success"), error: req.flash("error") });
+        // res.status(400).json({ message: "Invalid OTP!" });
     }
 });
 

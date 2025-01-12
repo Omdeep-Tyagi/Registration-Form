@@ -5,9 +5,9 @@ const Joi = require('joi');
 const userValidationSchema = Joi.object({
   username: Joi.string().required(),
   email: Joi.string()
-      .email()
-      .pattern(/@akgec\.ac\.in$/) // Must end with "@akgec.ac.in"
-      .required(),
+  .email()
+  .pattern(/@gmail\.com$/) // Must end with "@gmail.com"
+  .required(),
   phoneNo: Joi.number()
       .integer() // Ensures it is an integer 
       .min(1000000000) // Minimum value to ensure it's at least 10 digits
@@ -24,6 +24,7 @@ const userValidationSchema = Joi.object({
        .required(),
   branch: Joi.string().required(),
   section: Joi.string().required(),
+  domain: Joi.string().required(),
   gender: Joi.string().valid('Male', 'Female' , 'Others') .required(),
   scholarType: Joi.string().valid('Day scholar', 'Hosteller').required()
 });
